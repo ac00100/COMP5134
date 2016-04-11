@@ -55,7 +55,7 @@ public abstract class AbstractMainHandler<V extends AbstractMainFrame> {
 		}
 
 		if (loginStaff == null) {
-			System.exit(0);
+			this.view.dispose();
 		}
 
 		return (Staff) loginStaff;
