@@ -1,4 +1,4 @@
-package org.system.core.service;
+package org.system.base.service;
 
 import org.system.base.config.SaveMode;
 import org.system.base.dao.ObjectDAO;
@@ -8,16 +8,16 @@ import org.system.core.util.SessionUtil;
 
 public abstract class AbstractService {
 
-	private ObjectDAO<Company> objectDAO;
+	private ObjectDAO<Company> companyDAO;
 
 	public AbstractService() {
-		objectDAO = new ObjectDAOImpl<Company>(new Company());
+		companyDAO = new ObjectDAOImpl<Company>(new Company());
 	}
 
 	public Company loadCompany() {
 		switch (SaveMode.mode) {
 		case File:
-			return SessionUtil.getCompany();
+			return companyDAO.readObjectsFromFile();
 		case Session:
 			return SessionUtil.getCompany();
 		default:
@@ -28,7 +28,7 @@ public abstract class AbstractService {
 	public void saveCompany(Company company) {
 		switch (SaveMode.mode) {
 		case File:
-			objectDAO.writeObjectToFile(company);
+			companyDAO.writeObjectToFile(company);
 		case Session:
 			SessionUtil.setCompany(company);
 		default:

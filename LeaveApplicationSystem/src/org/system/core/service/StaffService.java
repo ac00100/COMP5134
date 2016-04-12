@@ -2,6 +2,7 @@ package org.system.core.service;
 
 import java.util.List;
 
+import org.system.base.service.AbstractService;
 import org.system.core.dto.Company;
 import org.system.core.model.Staff;
 import org.system.core.util.ListUtil;

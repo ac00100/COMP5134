@@ -35,7 +35,12 @@ public class LeaveApplicationSystemHandler extends AbstractMainHandler<MainFrame
 	public void init() {
 		super.init();
 
-		this.authrizate(getLoginStaff());
+		Staff loginStaff = getLoginStaff();
+		if (loginStaff == null) {
+			return;
+		}
+
+		this.authrizate(loginStaff);
 
 		view.setLoginStaff(getLoginStaff());
 
