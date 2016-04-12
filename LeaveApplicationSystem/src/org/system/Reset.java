@@ -14,16 +14,9 @@ public class Reset {
 		Company company = new Company();
 		ObjectDAO<Company> serializer = new ObjectDAOImpl<Company>(company);
 
-		// List<Staff> staffs = new ArrayList<Staff>();
-		// staffs.add(new Staff("1", "Benny"));
-		// staffs.add(new Staff("2", "Candy"));
-		// company.setStaffs(staffs);
 		serializer.writeObjectToFile(company);
 
 		try {
-			// Company company2 = (Company) serializer.readObjectsFromFile();
-
-			// System.out.println(company2.getStaffs().get(1).getName());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

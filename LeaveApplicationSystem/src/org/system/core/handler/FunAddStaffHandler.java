@@ -7,9 +7,9 @@ import org.system.base.util.ViewValidator;
 import org.system.core.model.Staff;
 import org.system.core.view.InternalFrameAddStaff;
 
-public class AddStaffHandler extends AbstractFunctionHandler<LeaveApplicationSystemHandler, InternalFrameAddStaff> {
+public class FunAddStaffHandler extends AbstractFunctionHandler<LeaveApplicationSystemHandler, InternalFrameAddStaff> {
 
-	public AddStaffHandler(LeaveApplicationSystemHandler handler, InternalFrameAddStaff view) {
+	public FunAddStaffHandler(LeaveApplicationSystemHandler handler, InternalFrameAddStaff view) {
 		super(handler, view);
 	}
 

@@ -6,9 +6,9 @@ import java.awt.event.ActionListener;
 import org.system.base.util.ViewValidator;
 import org.system.core.view.InternalFrameDeleteStaff;
 
-public class DeleteStaffHandler extends AbstractFunctionHandler<LeaveApplicationSystemHandler, InternalFrameDeleteStaff> {
+public class FunDeleteStaffHandler extends AbstractFunctionHandler<LeaveApplicationSystemHandler, InternalFrameDeleteStaff> {
 
-	public DeleteStaffHandler(LeaveApplicationSystemHandler mainHandler, InternalFrameDeleteStaff view) {
+	public FunDeleteStaffHandler(LeaveApplicationSystemHandler mainHandler, InternalFrameDeleteStaff view) {
 		super(mainHandler, view);
 	}
 

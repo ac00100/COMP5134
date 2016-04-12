@@ -5,12 +5,13 @@ import java.awt.event.ActionListener;
 
 import org.system.base.util.ViewValidator;
 import org.system.core.model.Staff;
+import org.system.core.util.SessionUtil;
 import org.system.core.view.InternalFrameAssignStaff;
 
-public class AssignStaffHandler extends
+public class FunAssignStaffHandler extends
 		AbstractFunctionHandler<LeaveApplicationSystemHandler, InternalFrameAssignStaff> {
 
-	public AssignStaffHandler(LeaveApplicationSystemHandler mainHandler, InternalFrameAssignStaff view) {
+	public FunAssignStaffHandler(LeaveApplicationSystemHandler mainHandler, InternalFrameAssignStaff view) {
 		super(mainHandler, view);
 	}
 
@@ -35,6 +36,7 @@ public class AssignStaffHandler extends
 			staffService.assignStafftoSupervisor(view.getStaffID(), view.getSupervisorID());
 			init();
 		}
+		SessionUtil.refreshHandlers();
 	}
 
 	class AssignStaffValidator extends ViewValidator<InternalFrameAssignStaff> {

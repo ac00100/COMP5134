@@ -10,14 +10,12 @@ public abstract class AbstractFunctionHandler<H extends AbstractMainHandler<?>, 
 	protected V view;
 	protected StaffService staffService;
 	protected LeaveService leaveService;
-	protected Staff loginStaff;
 
 	public AbstractFunctionHandler(H mainHandler, V view) {
 		this.mainHandler = mainHandler;
 		this.view = (V) view;
 		staffService = new StaffService();
 		leaveService = new LeaveService();
-		loginStaff = mainHandler.getLoginStaff();
 	}
 
 	public void init() {
@@ -30,5 +28,13 @@ public abstract class AbstractFunctionHandler<H extends AbstractMainHandler<?>, 
 	public void showView() {
 		init();
 		view.displayView();
+	}
+
+	public Staff getLoginStaff() {
+		return mainHandler.getLoginStaff();
+	}
+
+	public void setLoginStaff(Staff loginStaff) {
+		mainHandler.setLoginStaff(loginStaff);
 	}
 }

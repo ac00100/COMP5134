@@ -9,24 +9,26 @@ import java.util.List;
 
 import org.system.core.model.HRStaff;
 import org.system.core.model.Staff;
+import org.system.core.util.ListUtil;
 import org.system.core.util.SessionUtil;
 import org.system.core.view.MainFrameLeaveApplicationSystem;
 
 public class LeaveApplicationSystemHandler extends AbstractMainHandler<MainFrameLeaveApplicationSystem> {
-	private AddStaffHandler addStaffHandler;
-	private DeleteStaffHandler deleteStaffHandler;
-	private AssignStaffHandler assignStaffHandler;
-	private ViewLeaveHandler viewLeaveHandler;
-	private ApplyLeaveHandler applyLeaveHandler;
-	private HandleLeaveHandler handleLeaveHandler;
+	private FunAddStaffHandler addStaffHandler;
+	private FunDeleteStaffHandler deleteStaffHandler;
+	private FunAssignStaffHandler assignStaffHandler;
+	private FunViewLeaveHandler viewLeaveHandler;
+	private FunApplyLeaveHandler applyLeaveHandler;
+	private FunHandleLeaveHandler handleLeaveHandler;
 
-	private List<LeaveView> leaveViews;
+	private List<InitView> leaveViews;
 
 	public LeaveApplicationSystemHandler(MainFrameLeaveApplicationSystem view) {
 		super(view);
 		view.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
+				ListUtil.removeTargetObjectFromList(SessionUtil.getUserHandlers(), getThis());
 				getView().dispose();
 			}
 		});
@@ -44,12 +46,12 @@ public class LeaveApplicationSystemHandler extends AbstractMainHandler<MainFrame
 
 		view.setLoginStaff(getLoginStaff());
 
-		addStaffHandler = new AddStaffHandler(this, view.getInternalFrameAddStaff());
-		deleteStaffHandler = new DeleteStaffHandler(this, view.getInternalFrameDeleteStaff());
-		assignStaffHandler = new AssignStaffHandler(this, view.getInternalFrameAssignStaff());
-		viewLeaveHandler = new ViewLeaveHandler(this, view.getInternalFrameViewLeave());
-		applyLeaveHandler = new ApplyLeaveHandler(this, view.getInternalFrameApplyLeave());
-		handleLeaveHandler = new HandleLeaveHandler(this, view.getInternalFrameHandleLeave());
+		addStaffHandler = new FunAddStaffHandler(this, view.getInternalFrameAddStaff());
+		deleteStaffHandler = new FunDeleteStaffHandler(this, view.getInternalFrameDeleteStaff());
+		assignStaffHandler = new FunAssignStaffHandler(this, view.getInternalFrameAssignStaff());
+		viewLeaveHandler = new FunViewLeaveHandler(this, view.getInternalFrameViewLeave());
+		applyLeaveHandler = new FunApplyLeaveHandler(this, view.getInternalFrameApplyLeave());
+		handleLeaveHandler = new FunHandleLeaveHandler(this, view.getInternalFrameHandleLeave());
 
 		view.addAddNewStaffMenuActionListener(getShowViewActionListener(addStaffHandler));
 		view.addDeleteStaffMenuActionListener(getShowViewActionListener(deleteStaffHandler));
@@ -65,7 +67,7 @@ public class LeaveApplicationSystemHandler extends AbstractMainHandler<MainFrame
 			}
 		});
 
-		leaveViews = new ArrayList<LeaveView>();
+		leaveViews = new ArrayList<InitView>();
 		leaveViews.add(viewLeaveHandler);
 		leaveViews.add(applyLeaveHandler);
 		leaveViews.add(handleLeaveHandler);
@@ -104,8 +106,12 @@ public class LeaveApplicationSystemHandler extends AbstractMainHandler<MainFrame
 	}
 
 	public void initInternalLeaveView() {
-		for (LeaveView leaveView : leaveViews) {
+		for (InitView leaveView : leaveViews) {
 			leaveView.init();
 		}
+	}
+
+	public LeaveApplicationSystemHandler getThis() {
+		return this;
 	}
 }

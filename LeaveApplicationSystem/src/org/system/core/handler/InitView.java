@@ -1,6 +1,6 @@
 package org.system.core.handler;
 
-public interface LeaveView {
+public interface InitView {
 
 	public void init();
 

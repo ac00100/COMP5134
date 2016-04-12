@@ -36,6 +36,17 @@ public abstract class AbstractMainHandler<V extends AbstractMainFrame> {
 		return (loginStaff != null) ? loginStaff : exeuteVirtualLogin();
 	}
 
+	public void setLoginStaff(Staff loginStaff) {
+		this.loginStaff = loginStaff;
+	}
+	
+	public void refreshLoginStaff() {
+		if (loginStaff instanceof HRStaff) {
+			return;
+		}
+		loginStaff = staffService.getStaff(loginStaff.getStaffID());
+	}
+
 	public void staffLogout() {
 		loginStaff = null;
 	}

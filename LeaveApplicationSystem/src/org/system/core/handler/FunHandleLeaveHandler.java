@@ -9,9 +9,9 @@ import org.system.core.model.Leave.LeaveStatus;
 import org.system.core.util.LeaveUtil;
 import org.system.core.view.InternalFrameHandleLeave;
 
-public class HandleLeaveHandler extends AbstractFunctionHandler<LeaveApplicationSystemHandler, InternalFrameHandleLeave> implements LeaveView {
+public class FunHandleLeaveHandler extends AbstractFunctionHandler<LeaveApplicationSystemHandler, InternalFrameHandleLeave> implements InitView {
 
-	public HandleLeaveHandler(LeaveApplicationSystemHandler mainHandler, InternalFrameHandleLeave view) {
+	public FunHandleLeaveHandler(LeaveApplicationSystemHandler mainHandler, InternalFrameHandleLeave view) {
 		super(mainHandler, view);
 	}
 
@@ -19,7 +19,7 @@ public class HandleLeaveHandler extends AbstractFunctionHandler<LeaveApplication
 	public void init() {
 		super.init();
 
-		view.setViewTableModels(leaveService.getApproverLeaves(loginStaff.getStaffID()));
+		view.setViewTableModels(leaveService.getApproverLeaves(getLoginStaff().getStaffID()));
 
 		view.addApproveLeaveActionListener(new ActionListener() {
 			@Override
@@ -43,17 +43,17 @@ public class HandleLeaveHandler extends AbstractFunctionHandler<LeaveApplication
 			validator.popMessage();
 		} else {
 			Leave leave = leaveService.getLeave(view.getSelectedLeave().getLeaveID());
-			if (loginStaff.getSupervisorID() == null) {
+			if (getLoginStaff().getSupervisorID() == null) {
 				leave.setStatus(LeaveStatus.Endorsed);
 			} else {
-				leave.setApproverID(loginStaff.getSupervisorID());
+				leave.setApproverID(getLoginStaff().getSupervisorID());
 			}
-			leave.setApprovalHistory(LeaveUtil.constructApprovalHistory(leave, loginStaff, LeaveStatus.Endorsed));
+			leave.setApprovalHistory(LeaveUtil.constructApprovalHistory(leave, getLoginStaff(), LeaveStatus.Endorsed));
 
 			leaveService.updateLeave(leave);
 			init();
 			
-			LeaveUtil.notice(loginStaff, leave, loginStaff.getSupervisorID(), LeaveStatus.Endorsed);
+			LeaveUtil.notice(getLoginStaff(), leave, getLoginStaff().getSupervisorID(), LeaveStatus.Endorsed);
 		}
 	}
 
@@ -67,12 +67,12 @@ public class HandleLeaveHandler extends AbstractFunctionHandler<LeaveApplication
 			LeaveStatus status = LeaveStatus.Declined;
 			
 			leave.setStatus(status);
-			leave.setApprovalHistory(LeaveUtil.constructApprovalHistory(leave, loginStaff, status));
+			leave.setApprovalHistory(LeaveUtil.constructApprovalHistory(leave, getLoginStaff(), status));
 			
 			leaveService.updateLeave(leave);
 			init();
 
-			LeaveUtil.notice(loginStaff, leave, leave.getApplicantID(), LeaveStatus.Declined);
+			LeaveUtil.notice(getLoginStaff(), leave, leave.getApplicantID(), LeaveStatus.Declined);
 		}
 	}
 

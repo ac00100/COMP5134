@@ -47,4 +47,9 @@ public class SessionUtil {
 		return null;
 	}
 
+	public static void refreshHandlers() {
+		for (LeaveApplicationSystemHandler userHandler : userHandlers) {
+			userHandler.refreshLoginStaff();
+		}
+	}
 }

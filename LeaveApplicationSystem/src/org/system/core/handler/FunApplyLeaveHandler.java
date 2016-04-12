@@ -10,9 +10,9 @@ import org.system.core.util.DateUtil;
 import org.system.core.util.LeaveUtil;
 import org.system.core.view.InternalFrameApplyLeave;
 
-public class ApplyLeaveHandler extends AbstractFunctionHandler<LeaveApplicationSystemHandler, InternalFrameApplyLeave> implements LeaveView {
+public class FunApplyLeaveHandler extends AbstractFunctionHandler<LeaveApplicationSystemHandler, InternalFrameApplyLeave> implements InitView {
 
-	public ApplyLeaveHandler(LeaveApplicationSystemHandler mainHandler, InternalFrameApplyLeave view) {
+	public FunApplyLeaveHandler(LeaveApplicationSystemHandler mainHandler, InternalFrameApplyLeave view) {
 		super(mainHandler, view);
 	}
 
@@ -20,7 +20,7 @@ public class ApplyLeaveHandler extends AbstractFunctionHandler<LeaveApplicationS
 	public void init() {
 		super.init();
 
-		view.setViewTableModels(leaveService.getLeaves(loginStaff.getStaffID()));
+		view.setViewTableModels(leaveService.getLeaves(getLoginStaff().getStaffID()));
 
 		view.addApplyLeaveActionListener(new ActionListener() {
 			@Override
@@ -44,12 +44,12 @@ public class ApplyLeaveHandler extends AbstractFunctionHandler<LeaveApplicationS
 		if (validator.hasWarningMessage()) {
 			validator.popMessage();
 		} else {
-			Leave leave = new Leave(loginStaff.getStaffID(), DateUtil.getDate(view.getStartDateStr()),
-					DateUtil.getDate(view.getStartDateStr()), loginStaff.getSupervisorID());
+			Leave leave = new Leave(getLoginStaff().getStaffID(), DateUtil.getDate(view.getStartDateStr()),
+					DateUtil.getDate(view.getStartDateStr()), getLoginStaff().getSupervisorID());
 			leaveService.createLeave(leave);
 			init();
 
-			LeaveUtil.notice(loginStaff, leave, loginStaff.getSupervisorID(), LeaveStatus.Endorsed);
+			LeaveUtil.notice(getLoginStaff(), leave, getLoginStaff().getSupervisorID(), LeaveStatus.Endorsed);
 		}
 	}
 
@@ -65,7 +65,7 @@ public class ApplyLeaveHandler extends AbstractFunctionHandler<LeaveApplicationS
 			leaveService.updateLeave(leave);
 			init();
 
-			LeaveUtil.notice(loginStaff, leave, loginStaff.getSupervisorID(), LeaveStatus.Cancelled);
+			LeaveUtil.notice(getLoginStaff(), leave, getLoginStaff().getSupervisorID(), LeaveStatus.Cancelled);
 		}
 	}
 

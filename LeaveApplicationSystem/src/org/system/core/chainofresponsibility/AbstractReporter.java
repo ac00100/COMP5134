@@ -58,9 +58,6 @@ public class AbstractReporter extends Staff implements ReporterChain {
 					return;
 				}
 
-				leave.setApprovalHistory(LeaveUtil.constructApprovalHistory(leave, chain, chainStatus));
-				leaveService.updateLeave(leave);
-				
 				if (chainStatus == LeaveStatus.Endorsed) {
 					
 					if (chain.getSupervisorID() != null) {
@@ -76,7 +73,6 @@ public class AbstractReporter extends Staff implements ReporterChain {
 					replyNotice(chain, leave, leave.getApplicantID());
 				}
 			} else {
-				leave.setApprovalHistory(LeaveUtil.constructApprovalHistory(leave, this, LeaveStatus.Endorsed));
 				leave.setStatus(LeaveStatus.Endorsed);
 				leaveService.updateLeave(leave);
 				replyNotice(this, leave, leave.getApplicantID());
@@ -106,11 +102,22 @@ public class AbstractReporter extends Staff implements ReporterChain {
 				this.getName() + " request for approval Leave (" + leave +") \n"
 						+ "requested by Applicant (" + staffService.getStaff(leave.getApplicantID()).getName() + ").",
 						"Request Notice", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, status, null);
+		LeaveStatus chainStatus = (i >= 0) ? status[i] : null;
+		
+		if (chainStatus != null) {
+			leave.setApprovalHistory(LeaveUtil.constructApprovalHistory(leave, chain, chainStatus));
+			leaveService.updateLeave(leave);
+			
+			LeaveApplicationSystemHandler applicantHandler = SessionUtil.getUserHandler(leave.getApplicantID());
+			if (applicantHandler != null) {
+				applicantHandler.initInternalLeaveView();
+			}
+		}
 		
 		handler.initInternalLeaveView();
 		chainHandler.initInternalLeaveView();
 		
-		return status[i];
+		return chainStatus;
 	}
 
 	
